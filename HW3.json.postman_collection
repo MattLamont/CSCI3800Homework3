@@ -1,0 +1,151 @@
+{
+	"id": "6964fca1-fb67-4f69-0347-94e4564dfa75",
+	"name": "HW3",
+	"description": "",
+	"order": [
+		"fa7ae8ba-02da-ca15-ea79-81f435191071",
+		"cd301eba-3eb6-2195-fb49-2459faeea897",
+		"e49a47fe-8430-b14b-f6cb-799aac52e131",
+		"65a9a0a0-8d06-e30d-7d83-8c62f8e795f0",
+		"748d8b02-7cd1-d041-03f9-85d057c42c94"
+	],
+	"folders": [],
+	"timestamp": 1458624520195,
+	"owner": 0,
+	"remoteLink": "",
+	"public": false,
+	"requests": [
+		{
+			"id": "65a9a0a0-8d06-e30d-7d83-8c62f8e795f0",
+			"headers": "",
+			"url": "http://mattlamont-test.apigee.net/hello-world/accesstoken",
+			"preRequestScript": null,
+			"pathVariables": {},
+			"method": "POST",
+			"data": [
+				{
+					"key": "client_id",
+					"value": "S53a55topXj0PM6BBNeDBLpfsIjp77y3",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "client_secret",
+					"value": "SUAeNNdMCatHJbto",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "grant_type",
+					"value": "client_credentials",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "urlencoded",
+			"version": 2,
+			"tests": "\r\ntests[\"error\"] = responseBody.has(\"error\");",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1458967262110,
+			"name": "Authorize with bad client id",
+			"description": "Request to OAuth server for the Bearer Token",
+			"collectionId": "6964fca1-fb67-4f69-0347-94e4564dfa75",
+			"responses": []
+		},
+		{
+			"id": "748d8b02-7cd1-d041-03f9-85d057c42c94",
+			"headers": "Authorization: Bearer {{auth_token}}\n",
+			"url": "http://mattlamont-test.apigee.net/hello-world/github_user_email",
+			"preRequestScript": null,
+			"pathVariables": {},
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"version": 2,
+			"tests": "tests[\"failed validation\"] = responseBody.has(\"validation failed\");",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1458967258280,
+			"name": "Get GitHub Email without query parameter",
+			"description": "Get request to API with the bearer token",
+			"collectionId": "6964fca1-fb67-4f69-0347-94e4564dfa75",
+			"responses": []
+		},
+		{
+			"id": "cd301eba-3eb6-2195-fb49-2459faeea897",
+			"headers": "Authorization: Bearer {{auth_token}}\n",
+			"url": "http://mattlamont-test.apigee.net/hello-world/github_user_email?username=MattLamont",
+			"preRequestScript": null,
+			"pathVariables": {},
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"tests": "tests[\"Has email key\"] = responseBody.has(\"email\");\ntests[\"Has email value\"] = responseBody.has(\"matthewlamont454@gmail.com\");",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1458967237776,
+			"name": "Get GitHub Email",
+			"description": "Get request to API with the bearer token",
+			"collectionId": "6964fca1-fb67-4f69-0347-94e4564dfa75",
+			"responses": []
+		},
+		{
+			"id": "e49a47fe-8430-b14b-f6cb-799aac52e131",
+			"headers": "",
+			"url": "http://mattlamont-test.apigee.net/hello-world/github_user_email?username=MattLamont",
+			"preRequestScript": null,
+			"pathVariables": {},
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"version": 2,
+			"tests": "tests[\"401\"] = responseBody.has(\"401\");",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1458967268220,
+			"name": "Request without authorizing",
+			"description": "",
+			"collectionId": "6964fca1-fb67-4f69-0347-94e4564dfa75",
+			"responses": []
+		},
+		{
+			"id": "fa7ae8ba-02da-ca15-ea79-81f435191071",
+			"headers": "",
+			"url": "http://mattlamont-test.apigee.net/hello-world/accesstoken",
+			"preRequestScript": null,
+			"pathVariables": {},
+			"method": "POST",
+			"data": [
+				{
+					"key": "client_id",
+					"value": "S53a55topXj0PM6BBNeDBLpfsIjp77y4",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "client_secret",
+					"value": "SUAeNNdMCatHJbto",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "grant_type",
+					"value": "client_credentials",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "urlencoded",
+			"version": 2,
+			"tests": "\r\nvar data = JSON.parse( responseBody );\r\n\r\nvar bearer = \"Bearer \";\r\nbearer += data.access_token;\r\npostman.setEnvironmentVariable(\"auth_token\", data.access_token );\r\nconsole.log( \"token\" , postman.getEnvironmentVariable( \"auth_token\" ));",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1458967242606,
+			"name": "Authorize",
+			"description": "Request to OAuth server for the Bearer Token",
+			"collectionId": "6964fca1-fb67-4f69-0347-94e4564dfa75",
+			"responses": []
+		}
+	]
+}
