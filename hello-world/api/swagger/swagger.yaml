@@ -1,0 +1,94 @@
+swagger: "2.0"
+info:
+  version: "0.0.1"
+  title: HW3 Retrieve Github Email Address
+# during dev, should point to your local machine
+host: localhost:10010
+# basePath prefixes all resource paths 
+basePath: /
+# 
+schemes:
+  # tip: remove http to make production-grade
+  - http
+  - https
+# format of bodies a client can send (Content-Type)
+consumes:
+  - application/json
+  - application/x-www-form-urlencoded
+# format of the responses to the client (Accepts)
+produces:
+  - text/plain
+  - application/json
+x-a127-config: 
+  ##
+  ## Note: For <RemoteProxyName> below, substitute the name of the 
+  ## remote proxy service you created previously. For example:
+  ## MyRemoteProxyService.key: &apigeeProxyKey CONFIGURED
+  ##
+  newRemoteProxy.key: &apigeeProxyKey CONFIGURED
+  newRemoteProxy.uri: &apigeeProxyUri CONFIGURED
+x-a127-services:
+  oauth2:
+    provider: volos-oauth-apigee
+    options:
+      tokenLifetime: 300000
+      key: *apigeeProxyKey
+      uri: *apigeeProxyUri
+      #cache: mycache (See Oauth options section below.)
+      validGrantTypes:
+        - client_credentials
+        - authorization_code
+        - implicit_grant
+        - password
+      tokenPaths:  # These will be added to your paths section for you
+        authorize: /authorize
+        token: /accesstoken
+        invalidate: /invalidate
+        refresh: /refresh
+paths:
+  /github_user_email:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: hello_world
+    x-a127-apply: {}
+    get:
+      description: Gets the email address of the provided username
+      # used as the method name of the controller
+      operationId: hello
+      security:
+      - oauth2: []
+      parameters:
+        - name: username
+          in: query
+          description: The github username
+          required: true
+          type: string
+#        - name: password
+#          in: header
+#          description: The github user's password
+#          type: string
+#          required: true
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/HelloWorldResponse"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+# complex objects have schema definitions
+definitions:
+  HelloWorldResponse:
+    type: string
+  ErrorResponse:
+    type: string
+    
+securityDefinitions:
+  oauth2:
+    type: oauth2
+    scopes:
+      read: "allow read"
+    flow: application
+    tokenUrl: ignored
