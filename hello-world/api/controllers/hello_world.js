@@ -49,6 +49,8 @@ function hello(request, response)
 	});
 
     response.set( 'Content-Type' , 'text/plain' );
+
+	//This is a dummy token that doesn't actually work, because Github would disable it otherwise
 	var token = "28c10ac060bb9c8c5c1b623742e97f7cf626c049"
 
     var username = request.swagger.params.username.value;
